@@ -4,6 +4,8 @@ import { getContactById } from './services/contacts.js';
 
 const app = express();
 
+app.set('json spaces', 2);
+
 const PORT = 3000;
 
 app.get('/contacts', async (req, res) => {
