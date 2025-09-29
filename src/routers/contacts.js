@@ -11,9 +11,9 @@ const router = Router();
 
 router.get('/', ctrlWrapper(getByAllContacts));
 
-router.get('/:contactId', isValidId, ctrlWrapper(getByOneContact)), 
+router.get('/:contactId', isValidId, ctrlWrapper(getByOneContact));
 
-router.post('/', ctrlWrapper(createContactController), validateBody(createContactSchema));
+router.post('/', validateBody(createContactSchema), ctrlWrapper(createContactController));
 
 router.patch('/:contactId', isValidId, ctrlWrapper(patchContactController));
 
