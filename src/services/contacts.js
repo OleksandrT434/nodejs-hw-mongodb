@@ -1,13 +1,14 @@
 import { Contact } from "../db/models/contact.js";
 import { calculatePaginationData } from "../utils/calculatePaginationData.js";
 
-export const getAllContacts = async ({ page, perPage, sortBy, sortOrder, filter = {},}) => {
+
+export const getAllContacts = async ({ page, perPage, sortBy, sortOrder, filter, userId = {},}) => {
     const limit = perPage;
     const skip = (page - 1) * perPage;
 
     //////////////FILTER//////////////////////
 
-    const contactQuery = Contact.find();
+    const contactQuery = Contact.find({ userId });
     if (typeof filter.type === 'string') {
         contactQuery.where('contactType').equals(filter.type);
     }
@@ -30,8 +31,8 @@ export const getAllContacts = async ({ page, perPage, sortBy, sortOrder, filter 
     }
 }
 
-export const getContactById = async (contactId) => {
-    const contact = await Contact.findById(contactId);
+export const getContactById = async (contactId, userId) => {
+    const contact = await Contact.findOne({_id: contactId, userId}); 
     return contact;
 }
 
@@ -48,3 +49,4 @@ export const deleteContact = async (contactId) => {
     const deletedContact = await Contact.findByIdAndDelete(contactId);
     return deletedContact;
 }
+
