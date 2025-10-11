@@ -1,9 +1,17 @@
 import bcrypt from 'bcrypt';
 import { User } from "../db/models/user.js";
 import createHttpError from 'http-errors'
-import { FIFTIEEN_MINUTES, ONE_MONTH } from '../constans/index.js';
+import { FIFTIEEN_MINUTES, ONE_MONTH, TEMPLATES_DIR } from '../constans/index.js';
 import { Session } from '../db/models/session.js';
 import { randomBytes } from 'crypto';
+import jwt from 'jsonwebtoken';
+import { getEnvVariable } from '../utils/getEnvVariable.js';
+import { sendMail } from '../utils/sendMail.js';
+import handlebars from 'handlebars';
+import path from 'node:path';
+import fs from 'node:fs/promises';
+import { resetPasswordSchema } from '../validation/auth.js';
+
 
 
 ////////////////////REGISTER USER//////////////////////
@@ -75,6 +83,60 @@ export async function refreshSession(sessionId, refreshToken) {
         accessTokenValidUntil: Date.now() + FIFTIEEN_MINUTES,
         refreshTokenValidUntil: Date.now() + ONE_MONTH,
     });
+}
+////////////////////REQUEST EMAIL//////////////////////
+ 
+export const requestEmail = async (email) => {
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw createHttpError(404, 'User not found');
+    }
+    const token = jwt.sign({ sub: user._id, email }, getEnvVariable('JWT_SECRET'), { expiresIn: '15m' });
 
+    const resetPasswordTemplatePath = path.join(
+        TEMPLATES_DIR,
+        'reset-password-email.html'
+    );
+    const templateSource = (await fs.readFile(resetPasswordTemplatePath)).toString();
     
+    const template = handlebars.compile(templateSource);
+    const html = template({
+        name: user.name,
+        link: `${getEnvVariable('APP_DOMAIN')}/reset-password?token=${token}`,
+    });
+    try {
+        await sendMail({
+            from: getEnvVariable('SMTP_FROM'),
+            to: email,
+            subject: 'Reset your password',
+            html,
+        });
+    }
+    catch (error) {
+        throw new createHttpError(500, 'Failed to send the email, please try again later');
+    }
+}
+////////////////////RESET PASSWORD//////////////////////
+export const resetPassword = async (payload) => {
+    let entries;
+    try {
+        entries = jwt.verify(payload.token, getEnvVariable('JWT_SECRET')
+        );
+    } catch (error) {
+        if (error instanceof Error) throw new createHttpError(401, error.message);
+        throw error;
+    }
+
+    const user = await User.findOne({
+        email: entries.email,
+        _id: entries.sub,
+    });
+    if (!user) {
+        throw new createHttpError(404, 'User not found');
+    }
+    const encryptedPassword = await bcrypt.hash(payload.password, 10);
+    await User.updateOne(
+        { _id: entries.sub },
+        { password: encryptedPassword },
+    );
 }
