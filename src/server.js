@@ -5,10 +5,12 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import authRouter from './routers/auth.js';
 import cookieParser from 'cookie-parser';
 import { auth } from './middlewares/authenticate.js';
+import path from 'node:path';
 
 const app = express();
 
 app.use(cookieParser());
+app.use('/photos', express.static(path.resolve('src/uploads/photos')));
 app.set('json spaces', 2);
 app.use(express.json());
 app.use('/contacts', auth, contactRouter)
