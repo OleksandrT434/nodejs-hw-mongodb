@@ -89,7 +89,7 @@ export async function refreshSession(sessionId, refreshToken) {
 export const requestEmail = async (email) => {
     const user = await User.findOne({ email });
     if (!user) {
-        throw createHttpError(404, 'User not found');
+        return;
     }
     const token = jwt.sign({ sub: user._id, email }, getEnvVariable('JWT_SECRET'), { expiresIn: '15m' });
 
