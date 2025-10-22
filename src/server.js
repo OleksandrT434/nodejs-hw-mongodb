@@ -6,8 +6,16 @@ import authRouter from './routers/auth.js';
 import cookieParser from 'cookie-parser';
 import { auth } from './middlewares/authenticate.js';
 import path from 'node:path';
+import * as fs from 'node:fs';
+
+import  swaggerUI  from 'swagger-ui-express';
+import cors from 'cors';
+
+const SWAGGER_FILE = JSON.parse(fs.readFileSync(path.join('docs', 'swagger.json')))
 
 const app = express();
+
+app.use('/api-docs',swaggerUI.serve, swaggerUI.setup(SWAGGER_FILE));
 
 app.use(cookieParser());
 app.use('/photos', express.static(path.resolve('src/uploads/photos')));

@@ -1,0 +1,57 @@
+type: object
+required:
+  - _id
+  - name
+  - phoneNumber
+  - email
+  - isFavorite
+  - contactType
+  - photo
+  - createdAt
+  - updatedAt
+  - userId
+properties:
+  _id:
+    type: string
+    description: The unique identifier of the contact.
+    example: 68f3c06a5b5826ab01018fb3
+  name:
+    type: string
+    description: The name of the contact.
+    example: Peter Parker
+  phoneNumber:
+    type: integer
+    description: The phone number of the contact.
+    example: 1234567890
+  email:
+    type: string
+    description: The email address of the contact.
+    example: spider-man123@gmail.com
+  isFavorite:
+    type: boolean
+    description: Indicates if the contact is marked as a favorite.
+    example: true
+  contactType:
+    type: string
+    description: The type of contact (e.g., personal, work).
+    enum: [personal, work, home]
+    example: personal
+  photo:
+    type: string
+    default: null
+    description: URL to the contact's photo.
+    example: 'https://res.cloudinary.com/dakn8g6q3/image/upload/v1760334079/auoauxzr…'
+  createdAt:
+    type: string
+    format: date-time
+    description: The date and time when the contact was created.
+    example: '2023-08-15T10:20:30Z'
+  updatedAt:
+    type: string
+    format: date-time
+    description: The date and time when the contact was last updated.
+    example: '2023-09-01T14:25:35Z'
+  userId:
+    type: string
+    description: The unique identifier of the user who owns the contact.
+    example: 68f3c2055b5826ab01018fb8

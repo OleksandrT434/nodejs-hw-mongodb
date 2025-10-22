@@ -1,0 +1,59 @@
+tags:
+  - Contacts
+summary: Create contact
+operationId: createContact
+description: Create a new contact in the contact book.
+security:
+  - bearerAuth: []
+
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - name
+          - phoneNumber
+          - email
+          - contactType
+        properties:
+          name:
+            type: string
+            description: The name of the contact.
+            example: John Doe
+          phoneNumber:
+            type: integer
+            description: The phone number of the contact.
+            example: 9876543210
+          email:
+            type: string
+            description: The email address of the contact.
+            example: test.example@mail.com
+          contactType:
+            type: string
+            description: The type of contact (e.g., personal, work).
+            enum: [personal, work, home]
+            example: work
+
+responses:
+  '201':
+    description: Successfully created a contact!
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a contact!
+            data:
+              $ref: ../../components/contact.yaml
+  '401':
+    $ref: ../../components/responses/401.yaml

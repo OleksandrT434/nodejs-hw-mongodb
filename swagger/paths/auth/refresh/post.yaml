@@ -1,0 +1,59 @@
+tags:
+  - Auth
+summary: User refresh token
+operationId: refreshUserToken
+description: Session refresh by receiving a new token
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - status
+          - message
+          - data
+        properties:
+          status:
+            type: integer
+            description: HTTP status code.
+            example: 200
+          message:
+            type: string
+            description: Success message.
+            example: Refresh session successfully!
+          data:
+            type: object
+            properties:
+              accessToken:
+                type: string
+                description: New JWT token.
+                example: Aj4uhZD2RNCbgrYfxemPYuhIhK7r6fkiHCIiXjFh
+responses:
+  200:
+    description: Session refreshed successfully!
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code.
+              example: 200
+            message:
+              type: string
+              description: Success message.
+              example: Refresh session successfully!
+            data:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  description: New JWT token.
+                  example: Aj4uhZD2RNCbgrYfxemPYuhIhK7r6fkiwefwrewr213
+  401:
+    $ref: ../../../components/responses/401.yaml
+  500:
+    $ref: ../../../components/responses/500.yaml

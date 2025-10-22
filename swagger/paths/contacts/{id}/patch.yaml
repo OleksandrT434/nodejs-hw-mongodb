@@ -1,0 +1,74 @@
+tags:
+  - Contacts
+summary: Update contact by ID
+operationId: updateContactById
+description: Update a single contact's information using its unique ID.
+security:
+  - bearerAuth: []
+parameters:
+  - name: id
+    in: path
+    required: true
+    schema:
+      type: string
+      description: The unique identifier of the contact.
+      example: '64b7f0c2e1d3f2a5b6c8d9e0'
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          required:
+            - name
+            - phoneNumber
+            - email
+            - contactType
+            - isFavorite
+            - photo
+          properties:
+            name:
+              type: string
+              description: The name of the contact.
+              example: John Doe
+            phoneNumber:
+              type: integer
+              description: The phone number of the contact.
+              example: +380991234567
+            email:
+              type: string
+              description: The email address of the contact.
+              example: test.example@mail.com
+            contactType:
+              type: string
+              description: The type of contact (e.g., personal, work).
+              enum: [personal, work, home]
+              example: work
+            isFavorite:
+              type: boolean
+              example: true
+              description: Indicates if the contact is marked as a favorite.
+            photo:
+              type: string
+              example: 'https://res.cloudinary.com/dakn8g6q3/image/upload/v1760275560/hyqkbnv4…'
+              description: URL of the contact's photo.
+responses:
+  200:
+    description: Contact updated successfully.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+              example: '64b7f0c2e1d3f2a5b6c8d9e0'
+            name:
+              type: string
+              example: John Doe
+            phoneNumber:
+              type: integer
+              example: +380991234567
+            email:
+              type: string
+              example:
+  400:
+    $ref: ../../../components/responses/400.yaml
