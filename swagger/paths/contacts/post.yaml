@@ -16,15 +16,17 @@ requestBody:
           - phoneNumber
           - email
           - contactType
+          - isFavorite
+          - photo
         properties:
           name:
             type: string
             description: The name of the contact.
             example: John Doe
           phoneNumber:
-            type: integer
+            type: string
             description: The phone number of the contact.
-            example: 9876543210
+            example: '+38087654320'
           email:
             type: string
             description: The email address of the contact.
@@ -39,7 +41,7 @@ requestBody:
             description: Indicates if the contact is a favorite.
             example: true
           photo:
-            type: string
+            format: binary
             description: URL of the contact's photo.
             example: 'https://res.cloudinary.com/demo/image/upload/sample.jpg'
 

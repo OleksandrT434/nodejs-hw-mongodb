@@ -16,25 +16,23 @@ parameters:
 requestBody:
   required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
-        required:
-          - name
-          - phoneNumber
-          - email
-          - contactType
+        description: Provide any of the contact fields to update (at least one).
+        minProperties: 1
         properties:
           name:
             type: string
             description: The name of the contact.
             example: John Doe
           phoneNumber:
-            type: integer
+            type: string
             description: The phone number of the contact.
-            example: +380991234567
+            example: '+380991234567'
           email:
             type: string
+            format: email
             description: The email address of the contact.
             example: test.example@mail.com
           contactType:
@@ -47,30 +45,9 @@ requestBody:
             example: true
             description: Indicates if the contact is marked as a favorite.
           photo:
-            type: string
+            format: binary
             example: 'https://res.cloudinary.com/dakn8g6q3/image/upload/v1760275560/hyqkbnv4…'
             description: URL of the contact's photo.
-    multipart/form-data:
-      schema:
-        type: object
-        properties:
-          name:
-            type: string
-          phoneNumber:
-            type: string
-            example: '+380991234567'
-          email:
-            type: string
-            format: email
-          contactType:
-            type: string
-            enum: [personal, work, home]
-          isFavorite:
-            type: boolean
-          photo:
-            type: string
-            format: binary
-            description: Photo file to upload.
 
 responses:
   200:
@@ -87,10 +64,10 @@ responses:
               type: string
               example: John Doe
             phoneNumber:
-              type: integer
-              example: +380991234567
+              type: string
+              example: '+380991234567'
             email:
               type: string
-              example:
+              example: test.Neo@gmail.com
   400:
     $ref: ../../../components/responses/400.yaml

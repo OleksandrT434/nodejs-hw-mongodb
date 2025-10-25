@@ -136,61 +136,96 @@
               "type": "string",
               "description": "The unique identifier of the contact.",
               "example": "64b7f0c2e1d3f2a5b6c8d9e0"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "phoneNumber",
+                  "email",
+                  "contactType"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the contact.",
+                    "example": "John Doe"
+                  },
+                  "phoneNumber": {
+                    "type": "integer",
+                    "description": "The phone number of the contact.",
+                    "example": 380991234567
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The email address of the contact.",
+                    "example": "test.example@mail.com"
+                  },
+                  "contactType": {
+                    "type": "string",
+                    "description": "The type of contact (e.g., personal, work).",
+                    "enum": [
+                      "personal",
+                      "work",
+                      "home"
+                    ],
+                    "example": "work"
+                  },
+                  "isFavorite": {
+                    "type": "boolean",
+                    "example": true,
+                    "description": "Indicates if the contact is marked as a favorite."
+                  },
+                  "photo": {
+                    "type": "string",
+                    "example": "https://res.cloudinary.com/dakn8g6q3/image/upload/v1760275560/hyqkbnv4…",
+                    "description": "URL of the contact's photo."
+                  }
+                }
+              }
             },
-            "content": {
-              "multipart/form-data": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "name",
-                    "phoneNumber",
-                    "email",
-                    "contactType",
-                    "isFavorite",
-                    "photo"
-                  ],
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "description": "The name of the contact.",
-                      "example": "John Doe"
-                    },
-                    "phoneNumber": {
-                      "type": "integer",
-                      "description": "The phone number of the contact.",
-                      "example": 380991234567
-                    },
-                    "email": {
-                      "type": "string",
-                      "description": "The email address of the contact.",
-                      "example": "test.example@mail.com"
-                    },
-                    "contactType": {
-                      "type": "string",
-                      "description": "The type of contact (e.g., personal, work).",
-                      "enum": [
-                        "personal",
-                        "work",
-                        "home"
-                      ],
-                      "example": "work"
-                    },
-                    "isFavorite": {
-                      "type": "boolean",
-                      "example": true,
-                      "description": "Indicates if the contact is marked as a favorite."
-                    },
-                    "photo": {
-                      "type": "string",
-                      "example": "https://res.cloudinary.com/dakn8g6q3/image/upload/v1760275560/hyqkbnv4…",
-                      "description": "URL of the contact's photo."
-                    }
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "example": "+380991234567"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "contactType": {
+                    "type": "string",
+                    "enum": [
+                      "personal",
+                      "work",
+                      "home"
+                    ]
+                  },
+                  "isFavorite": {
+                    "type": "boolean"
+                  },
+                  "photo": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Photo file to upload."
                   }
                 }
               }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Contact updated successfully.",
@@ -329,6 +364,16 @@
                       "home"
                     ],
                     "example": "work"
+                  },
+                  "isFavorite": {
+                    "type": "boolean",
+                    "description": "Indicates if the contact is a favorite.",
+                    "example": true
+                  },
+                  "photo": {
+                    "type": "string",
+                    "description": "URL of the contact's photo.",
+                    "example": "https://res.cloudinary.com/demo/image/upload/sample.jpg"
                   }
                 }
               }
