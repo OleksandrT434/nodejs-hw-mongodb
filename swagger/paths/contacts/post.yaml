@@ -16,8 +16,6 @@ requestBody:
           - phoneNumber
           - email
           - contactType
-          - isFavorite
-          - photo
         properties:
           name:
             type: string
@@ -36,14 +34,14 @@ requestBody:
             description: The type of contact (e.g., personal, work).
             enum: [personal, work, home]
             example: work
-          isFavorite:
+          isFavourite:
             type: boolean
             description: Indicates if the contact is a favorite.
             example: true
           photo:
+            type: string
             format: binary
-            description: URL of the contact's photo.
-            example: 'https://res.cloudinary.com/demo/image/upload/sample.jpg'
+            description: Photo file to upload.
 
 responses:
   '201':
